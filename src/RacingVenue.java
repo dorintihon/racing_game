@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.Random;
 
 class RacingVenue {
     private int finishLineX;
@@ -6,16 +7,23 @@ class RacingVenue {
     private Car[] cars;
     private static final Color[] CAR_COLORS = {Color.RED, Color.BLUE, Color.GREEN};
 
-    private static final int[] WHEEL_SIZES = {15, 18, 15};
-    private static final String[] TIRE_TYPES = {"all-season","summer", "summer"};
+    private static final int[] WHEEL_SIZES = {15, 16, 17};
+    private static final String[] TIRE_TYPES = {"sport","summer", "winter"};
+
+
 
     public RacingVenue() {
         cars = new Car[3];
 
+        Random random = new Random();
+
         for (int i = 0; i < cars.length; i++) {
-            CarWheel wheel = new CarWheel(WHEEL_SIZES[i]);
-            CarTire tire = new CarTire(TIRE_TYPES[i]);
-            Car car = new Car(new CarEngine(), wheel, tire, 0, CAR_Y_POSITION + i * 100, CAR_COLORS[i]);
+            int wheelIndex = random.nextInt(WHEEL_SIZES.length);
+            CarWheel wheel = new CarWheel(WHEEL_SIZES[wheelIndex]);
+
+            int tireIndex = random.nextInt(TIRE_TYPES.length);
+            CarTire tire = new CarTire(TIRE_TYPES[tireIndex]);
+            Car car = new Car(new CarEngine(), wheel.getPower(), tire, 0, CAR_Y_POSITION + i * 100, CAR_COLORS[i]);
             cars[i] = car;
         }
 

@@ -10,14 +10,24 @@ class Car {
     private int power;
 
 
-    public Car(CarEngine engine, CarWheel wheel, CarTire tire, int x, int y, Color color) {
+    public Car(CarEngine engine, int wheelSize, CarTire tire, int x, int y, Color color) {
         this.engine = engine;
-        this.wheel = wheel;
+        this.wheel = new CarWheel(wheelSize);
         this.tire = tire;
         this.x = x;
         this.y = y;
         this.color = color;
-        this.power = engine.getPower() - calculatePowerLoss(wheel.getSize(),tire.getType());
+        this.power = engine.getPower() - calculatePowerLoss(wheel.calculatePower(wheelSize),tire.getPower());
+    }
+
+    private long startTime;
+
+    public void move() {
+        double distance = power;
+        x += distance;
+        if (startTime == 0) {
+            startTime = System.currentTimeMillis();
+        }
     }
 
     public void setPower(int power) {
@@ -56,15 +66,8 @@ class Car {
         return color;
     }
 
-    private int calculatePowerLoss(int wheelSize, String tireType) {
-        int powerLoss = 0;
-        if (wheelSize > 17) {
-            powerLoss += 1;
-        }
-        if (tireType.equals("summer")) {
-            powerLoss += 2;
-        }
-        return powerLoss;
+    private int calculatePowerLoss(int wheelPower, int tirePower) {
+        return wheelPower + tirePower;
     }
 
 
